@@ -11,8 +11,6 @@ public class AutomationConfigsPanel extends JPanel {
     private JComboBox<Speed> tbaSelector;
     private Object[] speedArray = Arrays.stream(Speed.values()).toArray();
 
-    private JLabel timeOutLabel;
-    private JSpinner timeOutSpinner;
 
     public AutomationConfigsPanel(){
         init();
@@ -34,15 +32,6 @@ public class AutomationConfigsPanel extends JPanel {
         this.tbaSelector.setModel(new DefaultComboBoxModel<>(Speed.values()));
         this.tbaSelector.setBounds(12,45,135,30);
         this.add(tbaSelector);
-
-        this.timeOutLabel = new JLabel("Tiempo de espera:");
-        this.timeOutLabel.setBounds(160,30,150,15);
-        this.add(timeOutLabel);
-
-        this.timeOutSpinner = new JSpinner();
-        this.timeOutSpinner.setModel(new SpinnerNumberModel(60,30,120,30));
-        this.timeOutSpinner.setBounds(160,45,103,30);
-        this.add(timeOutSpinner);
     }
 
     public void setTimeBetweenActions(Speed speed){
@@ -52,13 +41,4 @@ public class AutomationConfigsPanel extends JPanel {
     public Speed getSelectedTimeBetweenActions(){
         return (Speed) speedArray[tbaSelector.getSelectedIndex()];
     }
-
-    public void setTimeOutTime(int timeInSeconds){
-        this.timeOutSpinner.setValue(timeInSeconds);
-    }
-
-    public int getSelectedTimeOut(){
-        return (int)timeOutSpinner.getValue();
-    }
-
 }

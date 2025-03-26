@@ -18,32 +18,35 @@ public class Preferences implements Serializable {
     private boolean dndMode;
 
     private Driver webDriver;
-    private int driverTimeout;
     private Speed driverTimeBetweenActions;
 
-    public Preferences(String studentID,boolean dnd, Driver driver, int timeOut, Speed timeBetweenActions){
+    public Preferences(String studentID,boolean dnd, Driver driver, Speed timeBetweenActions){
         this.studentID = studentID;
         this.dndMode = dnd;
         this.webDriver = driver;
-        this.driverTimeout = timeOut;
         this.driverTimeBetweenActions = timeBetweenActions;
     }
 
-    public Preferences(String studentID, String password, boolean dnd, Driver driver, int timeOut, Speed timeBetweenActions){
+    public Preferences(String studentID, String password, boolean dnd, Driver driver, Speed timeBetweenActions){
         this.studentID = studentID;
         this.password = password;
         this.dndMode = dnd;
         this.webDriver = driver;
-        this.driverTimeout = timeOut;
         this.driverTimeBetweenActions = timeBetweenActions;
     }
 
     public Preferences(){
         this.studentID = null;
         this.dndMode = false;
-        this.webDriver = Driver.EDGE;
-        this.driverTimeout = 60;
+        this.webDriver = Driver.CHROME;
         this.driverTimeBetweenActions = Speed.NORMAL;
+    }
+
+    public boolean checkUserCredentials(){
+        if(this.studentID.length() > 3 && (this.password != null && this.password.length() > 3)){
+            return true;
+        }
+        return false;
     }
 
     public String getStudentID() {
@@ -78,16 +81,22 @@ public class Preferences implements Serializable {
         this.webDriver = webDriver;
     }
 
-    public int getDriverTimeout() {
-        return driverTimeout;
-    }
-
-    public void setDriverTimeout(int driverTimeout) {
-        this.driverTimeout = driverTimeout;
-    }
-
     public Speed getDriverTimeBetweenActions() {
         return driverTimeBetweenActions;
+    }
+
+    public int getDriverTimeBetweenActionsAsMS() {
+        switch (this.driverTimeBetweenActions){
+            case LENTO -> {
+                return 3500;
+            }
+            case RAPIDO -> {
+                return 650;
+            }
+            case null, default -> {
+                return 1500;
+            }
+        }
     }
 
     public void setDriverTimeBetweenActions(Speed driverTimeBetweenActions) {
@@ -103,7 +112,6 @@ public class Preferences implements Serializable {
                 Objects.equals(otherPrefs.password, this.password) &&
                 otherPrefs.dndMode == this.dndMode &&
                 otherPrefs.webDriver == this.webDriver &&
-                otherPrefs.driverTimeout == this.driverTimeout &&
                 otherPrefs.driverTimeBetweenActions == this.driverTimeBetweenActions
         ){
             return true;

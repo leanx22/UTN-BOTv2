@@ -44,7 +44,6 @@ public class ConfigsMainPanel extends JPanel {
 
         this.automationConfigsPanel = new AutomationConfigsPanel();
         this.automationConfigsPanel.setTimeBetweenActions(prefController.getPreferences().getDriverTimeBetweenActions());
-        this.automationConfigsPanel.setTimeOutTime(prefController.getPreferences().getDriverTimeout());
         this.add(automationConfigsPanel);
 
         this.saveButton = new JButton("Guardar");
@@ -66,7 +65,7 @@ public class ConfigsMainPanel extends JPanel {
     private void saveChanges(){
 
         Preferences updatedPreferences = new Preferences(
-                getUserID(), getUserPassword(), isDndSelected(), getSelectedDriver(), getSelectedMaxWaitTime(), getSelectedTimeBetweenActions()
+                getUserID(), getUserPassword(), isDndSelected(), getSelectedDriver(), getSelectedTimeBetweenActions()
         );
 
         if(updatedPreferences.equals(prefController.getPreferences())){
@@ -108,10 +107,6 @@ public class ConfigsMainPanel extends JPanel {
 
     public Speed getSelectedTimeBetweenActions(){
         return this.automationConfigsPanel.getSelectedTimeBetweenActions();
-    }
-
-    public int getSelectedMaxWaitTime(){
-        return this.automationConfigsPanel.getSelectedTimeOut();
     }
 
 }

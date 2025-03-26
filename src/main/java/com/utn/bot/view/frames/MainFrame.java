@@ -1,7 +1,8 @@
 package com.utn.bot.view.frames;
 
+import com.utn.bot.Enumerators.InscriptionState;
 import com.utn.bot.controller.PreferencesController;
-import com.utn.bot.controller.SeleniumController;
+import com.utn.bot.model.Inscription;
 import com.utn.bot.utils.constants.App;
 import com.utn.bot.utils.constants.Resources;
 import com.utn.bot.view.panels.main.ControlsPanel;
@@ -9,17 +10,26 @@ import com.utn.bot.view.panels.main.InfoPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 
-public class MainFrame extends JFrame {
-    SeleniumController seleniumController;
+public class MainFrame extends JFrame implements PropertyChangeListener {
+    Inscription model;
     PreferencesController preferencesController;
 
-    public MainFrame(){
-        initializeFrame();
+    ControlsPanel controlsPanel;
+    InfoPanel infoPanel;
+
+    JProgressBar pBar;
+
+    public MainFrame(Inscription model){
+        this.model = model;
+        this.preferencesController = PreferencesController.getInstance();
+        prepareAndShowFrame();
     }
 
-    private void initializeFrame(){
+    private void prepareAndShowFrame(){
         this.setTitle(App.APP_NAME);
         this.setSize(640,480);
         this.setResizable(false);
@@ -28,13 +38,14 @@ public class MainFrame extends JFrame {
         this.setLayout(new BorderLayout());
         this.loadCustomIcon();
 
-        this.preferencesController = PreferencesController.getInstance();
-        this.seleniumController = new SeleniumController();
+        this.controlsPanel = new ControlsPanel(this, model);
+        this.add(this.controlsPanel, BorderLayout.WEST);
 
-        this.add(new ControlsPanel(this, seleniumController), BorderLayout.WEST);
-        this.add(new InfoPanel(), BorderLayout.CENTER);
-        JProgressBar pBar = new JProgressBar();
-        pBar.setIndeterminate(true);
+        this.infoPanel = new InfoPanel(this.model.getLogModel());
+        this.add(this.infoPanel, BorderLayout.CENTER);
+
+        this.pBar = new JProgressBar();
+        this.model.addPropertyChangeListener(this);
         this.add(pBar, BorderLayout.SOUTH);
 
         this.setVisible(true);
@@ -48,4 +59,22 @@ public class MainFrame extends JFrame {
         this.setIconImage(icon.getImage());
     }
 
+    public ControlsPanel getControlsPanel(){
+        return this.controlsPanel;
+    }
+
+    public InfoPanel getInfoPanel(){
+        return this.infoPanel;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if("inscriptionStatus".equals(evt.getPropertyName())){
+            if(evt.getNewValue() == InscriptionState.WORKING){
+                this.pBar.setIndeterminate(true);
+                return;
+            }
+            this.pBar.setIndeterminate(false);
+        }
+    }
 }

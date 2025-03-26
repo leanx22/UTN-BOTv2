@@ -37,7 +37,6 @@ public class PreferencesController {
     public void update(Preferences preferences) throws IllegalArgumentException {
         PreferenceValidator.validateUserID(preferences.getStudentID());
         PreferenceValidator.validatePassword(preferences.getPassword());
-        PreferenceValidator.validateDriverTimeoutTime(preferences.getDriverTimeout());
 
         this.preferences = preferences;
     }

@@ -5,4 +5,7 @@ public final class Errors {
     public final static String ACCOUNT_UID_FORMAT = "El legajo no debe ser menor a 3 caracteres y estar conformado sólo por números.";
     public final static String ACCOUNT_PASSWORD_FORMAT = "La clave tiene un formato incorrecto.";
     public final static String DRIVER_TIMEOUT_VALIDATION_ERROR = "El tiempo de espera máximo debe estar entre 30 y 120 segundos.";
+
+    public final static String SYSACAD_INSCRIPTION_CLOSE_ERROR = "Las inscripciones no estan disponibles. Intentá en unos minutos.";
+    public final static String SYSACAD_BAD_CREDENTIALS = "Las credenciales que ingresaste son incorrectas.";
 }

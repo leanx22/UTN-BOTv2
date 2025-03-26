@@ -1,10 +1,14 @@
 package com.utn.bot.view.components.labels.iconified;
 
+import com.utn.bot.Enumerators.InscriptionState;
+
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 
-public class GifLabel extends JLabel {
+public class GifLabel extends JLabel implements PropertyChangeListener {
     public GifLabel(String path, int w, int h) {
 
         URL imageURL = getClass().getResource(path);
@@ -21,6 +25,19 @@ public class GifLabel extends JLabel {
 
         this.revalidate();
         this.repaint();
-        setVisible(true);
+        setVisible(false);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(!"inscriptionStatus".equals(evt.getPropertyName()))return;
+        switch (evt.getNewValue()){
+            case InscriptionState.WORKING -> {
+                this.setVisible(true);
+            }
+            default->{
+                this.setVisible(false);
+            }
+        }
     }
 }
